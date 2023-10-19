@@ -19,6 +19,14 @@ model User {
   blob          Bytes
   writtenPosts  Post[]  @relation("WrittenPosts")
   favoritePosts Post[]  @relation("FavoritePosts")
+  userPreferences UserPreferences[]
+}
+
+model UserPreferences {
+  id        Int     @id @default(autoincrement())
+  emailUpdates Boolean @default(false)
+  user User @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 model Post {
@@ -32,4 +40,11 @@ model Post {
   favoritedById Int?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  categories    Category[]
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String
+  posts Post[]
 }
